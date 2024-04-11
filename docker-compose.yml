@@ -1,0 +1,50 @@
+version: "3.8"
+services:
+    nginx:
+      build:
+        context: ./
+        dockerfile: Docker/nginx/Dockerfile
+      volumes:
+        - ./:/var/www
+      ports:
+        - "8080:80"
+      depends_on:
+        - php-fpm
+      container_name: dev-nginx
+    php-fpm:
+      build:
+        context: ./
+        dockerfile: Docker/fpm/Dockerfile
+      volumes:
+        - ./:/var/www
+        - ./Docker/fpm/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+        - ./Docker/fpm/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+      depends_on:
+        - redis
+        - database
+      container_name: dev-php-fpm
+    php-cli:
+      build:
+        context: ./
+        dockerfile: Docker/cli/Dockerfile
+      volumes:
+        - ./:/var/www
+      tty: true
+      container_name: dev-php-cli
+    database:
+      image: mysql:8.0
+      ports:
+        - "3307:3306"
+      environment:
+        - MYSQL_DATABASE=test
+        - MYSQL_USER=test
+        - MYSQL_PASSWORD=test
+        - MYSQL_ROOT_PASSWORD=test
+      volumes:
+        - ../DB_space/${DB_STORAGE_PATH}:/var/lib/mysql
+      container_name: dev-mySQL80
+    redis:
+      image: redis:7.2.4
+      ports:
+        - "6380:6379"
+      container_name: dev-redis
