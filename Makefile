@@ -1,6 +1,6 @@
 up:
 	#cat Docker/.env.docker >> .env
-	docker-compose up -d
+	docker-compose --env-file Docker/.env.docker --env-file .env up -d
 
 down:
 	docker-compose down
