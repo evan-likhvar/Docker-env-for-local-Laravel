@@ -1,6 +1,6 @@
 up:
-	#cat Docker/.env.docker >> .env
-	docker-compose --env-file Docker/.env.docker --env-file .env up -d
+	[ -f ".env" ] && echo '' || cat Docker/.env.docker >> .env
+	docker-compose up -d
 
 down:
 	docker-compose down
@@ -22,7 +22,6 @@ perm:
 new-laravel:
 	docker exec -it dev-php-cli composer create-project laravel/laravel new-app
 	docker exec -it dev-php-cli cp -a new-app/. ./ && rm -r -f new-app/ && echo >> .env
-	#cat Docker/.env.docker >> .env
 	docker exec -it dev-php-cli composer install
 
 migration:
