@@ -9,21 +9,21 @@ build:
 	docker-compose up --build -d
 
 enter-fpm:
-	docker exec -it dev-php-fpm bash
+	docker exec -it php-fpm-dev bash
 
 enter-cli:
-	docker exec -it dev-php-cli bash
+	docker exec -it php-cli-dev bash
 
 perm:
 #	sudo chown ${USER}:${USER} bootstrap/cache -R
 #	sudo chown ${USER}:${USER} storage -R
-	docker exec -it dev-php-cli chmod -R 777 /var/www/storage
+	docker exec -it php-cli-dev chmod -R 777 /var/www/storage
 
 new-laravel:
-	docker exec -it dev-php-cli composer create-project laravel/laravel new-app
-	docker exec -it dev-php-cli cp -a new-app/. ./ && rm -r -f new-app/ && echo >> .env
-	docker exec -it dev-php-cli composer install
+	docker exec -it php-cli-dev composer create-project laravel/laravel new-app
+	docker exec -it php-cli-dev cp -a new-app/. ./ && rm -r -f new-app/ && echo >> .env
+	docker exec -it php-cli-dev composer install
 
 migration:
-	docker exec -it dev-php-cli php artisan migrate
+	docker exec -it php-cli-dev php artisan migrate
 
