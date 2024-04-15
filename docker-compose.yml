@@ -21,7 +21,7 @@ services:
         - ./Docker/fpm/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
       depends_on:
         - redis
-        - database
+        - mySQL80-dev
       container_name: php-fpm-dev
     php-cli:
       build:
