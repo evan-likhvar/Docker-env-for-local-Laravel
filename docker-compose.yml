@@ -10,7 +10,7 @@ services:
         - "8080:80"
       depends_on:
         - php-fpm
-      container_name: dev-nginx
+      container_name: nginx-dev
     php-fpm:
       build:
         context: ./
@@ -22,7 +22,7 @@ services:
       depends_on:
         - redis
         - database
-      container_name: dev-php-fpm
+      container_name: php-fpm-dev
     php-cli:
       build:
         context: ./
@@ -30,21 +30,21 @@ services:
       volumes:
         - ./:/var/www
       tty: true
-      container_name: dev-php-cli
-    database:
+      container_name: php-cli-dev
+    mySQL80-dev:
       image: mysql:8.0
       ports:
         - "3307:3306"
       environment:
-        - MYSQL_DATABASE=${MYSQL_DATABASE}
-        - MYSQL_USER=${MYSQL_USER}
-        - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+        - MYSQL_DATABASE=${DB_DATABASE}
+        - MYSQL_USER=${DB_USERNAME}
+        - MYSQL_PASSWORD=${DB_PASSWORD}
         - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       volumes:
         - ../DB_space/${DB_STORAGE_PATH}:/var/lib/mysql
-      container_name: dev-mySQL80
+      container_name: mySQL80-dev
     redis:
       image: redis:7.2.4
       ports:
         - "6380:6379"
-      container_name: dev-redis
+      container_name: redis-dev
